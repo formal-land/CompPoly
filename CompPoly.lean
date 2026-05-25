@@ -1,6 +1,7 @@
 import CompPoly.Bivariate.Basic
 import CompPoly.Bivariate.CMvEquiv
 import CompPoly.Bivariate.ToPoly
+import CompPoly.CodingTheory.GuruswamiSudan
 import CompPoly.Data.Array.Lemmas
 import CompPoly.Data.Classes.DCast
 import CompPoly.Data.ExtTreeMap.DTreeMap

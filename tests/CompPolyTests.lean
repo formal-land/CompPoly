@@ -8,6 +8,7 @@ import CompPolyTests.Bivariate.Basic
 import CompPolyTests.Bivariate.Degree
 import CompPolyTests.Bivariate.Multiplicity
 import CompPolyTests.Bivariate.WeightedDegree
+import CompPolyTests.CodingTheory.GuruswamiSudan
 import CompPolyTests.Data.MvPolynomial.Notation
 import CompPolyTests.Fields.Binary.AdditiveNTT.NovelPolynomialBasis
 import CompPolyTests.Fields.Binary.BF128Ghash.Prelude
