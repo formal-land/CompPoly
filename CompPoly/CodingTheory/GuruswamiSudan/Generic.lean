@@ -409,8 +409,8 @@ def findKernelVector (matrix : Array (Array F)) (numCols : Nat) : Array F := Id.
           kernel := kernel.set! (n - 1) 1
     pure kernel
 
-def interpolateWithMultiplicity
-    (domain received : Array F) (m d k : Nat) : Bivariate F := Id.run do
+def interpolationMatrix
+    (domain received : Array F) (m d k : Nat) : Array (Array F) := Id.run do
   let monomials := monomialsBelowWeightedDegree d k
   let numMonomials := monomials.size
   let constraintsPerPoint := m * (m + 1) / 2
@@ -430,8 +430,15 @@ def interpolateWithMultiplicity
             let coeff : F := (coeffScalar : F) * (alpha ^ (i - a)) * (y ^ (j - b))
             row := row.set! monIdx coeff
         matrix := matrix.push row
+  pure matrix
+
+def interpolateWithMultiplicity
+    (domain received : Array F) (m d k : Nat) : Bivariate F :=
+  let monomials := monomialsBelowWeightedDegree d k
+  let numMonomials := monomials.size
+  let matrix := interpolationMatrix domain received m d k
   let solution := findKernelVector matrix numMonomials
-  pure (Bivariate.fromMonomials monomials solution)
+  Bivariate.fromMonomials monomials solution
 
 def extractSmallValue? (fe : F) : Option Nat := Id.run do
   for i in [0:101] do
@@ -711,6 +718,21 @@ partial def rrSearchWithDomain
 
 def findPolynomialRootsWithDomain
     (q : Bivariate F) (maxDegree : Nat) (hintValues domain : Array F) : Array (UniPoly F) :=
+  /-
+  This root finder intentionally mirrors the Lambdaworks educational heuristic:
+  it tries a linear special case, interpolated candidates from hints, bounded
+  small-coefficient search, and a Roth-Ruckenstein-style search with capped
+  candidates.
+
+  It is not complete as a polynomial root finder. For example over KoalaBear,
+  the bivariate polynomial `Q(Y) = (Y - 5000) * (Y - 5001)` has the constant
+  polynomial `f(X) = 5000` as a root, but with empty hints
+
+  `findPolynomialRootsWithDomain Q 1 #[] #[] = #[]`.
+
+  A full GS completeness theorem therefore has to assume completeness of this
+  root-finder call, or use a separate verified complete root finder.
+  -/
   if Bivariate.yDegree q <= 1 then
     findRootsLinearY q maxDegree
   else
