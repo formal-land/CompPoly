@@ -1,6 +1,10 @@
 import CompPoly.Bivariate.Basic
 import CompPoly.Bivariate.CMvEquiv
 import CompPoly.Bivariate.ToPoly
+import CompPoly.CodingTheory.GuruswamiSudan
+import CompPoly.CodingTheory.GuruswamiSudan.Counterexamples
+import CompPoly.CodingTheory.GuruswamiSudan.Correctness
+import CompPoly.CodingTheory.GuruswamiSudanFast
 import CompPoly.Data.Array.Lemmas
 import CompPoly.Data.Classes.DCast
 import CompPoly.Data.ExtTreeMap.DTreeMap
